@@ -1,0 +1,142 @@
+[
+  {
+    "filename": "travel_hour.json",
+    "from_city": "chitwan",
+    "text": "mode-bus, duration hour-3",
+    "to_city": "lumbini",
+    "type": "travel_hour"
+  },
+  {
+    "filename": "travel_hour.json",
+    "from_city": "lumbini",
+    "text": "mode-bus, duration hour-3",
+    "to_city": "chitwan",
+    "type": "travel_hour"
+  },
+  {
+    "filename": "travel_hour.json",
+    "from_city": "lumbini",
+    "text": "mode-bus, duration hour-4",
+    "to_city": "pokhara",
+    "type": "travel_hour"
+  },
+  {
+    "filename": "travel_hour.json",
+    "from_city": "pokhara",
+    "text": "mode-bus, duration hour-4",
+    "to_city": "lumbini",
+    "type": "travel_hour"
+  },
+  {
+    "filename": "travel_hour.json",
+    "from_city": "kathmandu",
+    "text": "mode-car, duration hour-1",
+    "to_city": "nagarkot",
+    "type": "travel_hour"
+  },
+  {
+    "filename": "travel_hour.json",
+    "from_city": "nagarkot",
+    "text": "mode-car, duration hour-1",
+    "to_city": "kathmandu",
+    "type": "travel_hour"
+  },
+  {
+    "filename": "travel_hour.json",
+    "from_city": "lumbini",
+    "text": "mode-bus, duration hour-10",
+    "to_city": "kathmandu",
+    "type": "travel_hour"
+  },
+  {
+    "filename": "travel_hour.json",
+    "from_city": "kathmandu",
+    "text": "mode-bus, duration hour-10",
+    "to_city": "lumbini",
+    "type": "travel_hour"
+  },
+  {
+    "filename": "travel_hour.json",
+    "from_city": "lumbini",
+    "text": "mode-bus, duration hour-9",
+    "to_city": "nagarkot",
+    "type": "travel_hour"
+  },
+  {
+    "filename": "travel_hour.json",
+    "from_city": "nagarkot",
+    "text": "mode-bus, duration hour-9",
+    "to_city": "lumbini",
+    "type": "travel_hour"
+  },
+  {
+    "filename": "travel_hour.json",
+    "from_city": "chitwan",
+    "text": "mode-bus, duration hour-5",
+    "to_city": "nagarkot",
+    "type": "travel_hour"
+  },
+  {
+    "filename": "travel_hour.json",
+    "from_city": "chitwan",
+    "text": "mode-bus, duration hour-5",
+    "to_city": "pokhara",
+    "type": "travel_hour"
+  },
+  {
+    "filename": "travel_hour.json",
+    "from_city": "kathmandu",
+    "text": "mode-bus, duration hour-5",
+    "to_city": "chitwan",
+    "type": "travel_hour"
+  },
+  {
+    "filename": "travel_hour.json",
+    "from_city": "pokhara",
+    "text": "mode-bus, duration hour-5",
+    "to_city": "chitwan",
+    "type": "travel_hour"
+  },
+  {
+    "filename": "travel_hour.json",
+    "from_city": "nagarkot",
+    "text": "mode-bus, duration hour-5",
+    "to_city": "chitwan",
+    "type": "travel_hour"
+  },
+  {
+    "filename": "travel_hour.json",
+    "from_city": "chitwan",
+    "text": "mode-bus, duration hour-5",
+    "to_city": "kathmandu",
+    "type": "travel_hour"
+  },
+  {
+    "filename": "travel_hour.json",
+    "from_city": "kathmandu",
+    "text": "mode-bus, duration hour-6",
+    "to_city": "pokhara",
+    "type": "travel_hour"
+  },
+  {
+    "filename": "travel_hour.json",
+    "from_city": "nagarkot",
+    "text": "mode-bus, duration hour-6",
+    "to_city": "pokhara",
+    "type": "travel_hour"
+  },
+  {
+    "filename": "travel_hour.json",
+    "from_city": "pokhara",
+    "text": "mode-bus, duration hour-6",
+    "to_city": "nagarkot",
+    "type": "travel_hour"
+  },
+  {
+    "filename": "travel_hour.json",
+    "from_city": "pokhara",
+    "text": "mode-bus, duration hour-6",
+    "to_city": "kathmandu",
+    "type": "travel_hour"
+  }
+]

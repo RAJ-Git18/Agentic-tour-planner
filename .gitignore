@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# OS specific
+.DS_Store
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# IDEs
+.idea/
+.vscode/
+
+# Database
+*.sqlite
+*.sqlite3
+*.db
+
+# Alembic
+# Uncomment the line below if you store credentials in alembic.ini
+# alembic.ini

@@ -1,0 +1,32 @@
+[
+  {
+    "city": "kathmandu",
+    "filename": "tour_attraction.json",
+    "text": "attractions in Kathmandu-Kathmandu offers cultural and religious attractions including Pashupatinath Temple, Boudhanath Stupa, Swayambhunath, Patan Durbar Square, Bhaktapur Durbar Square, and Garden of Dreams.",
+    "type": "attraction"
+  },
+  {
+    "city": "pokhara",
+    "filename": "tour_attraction.json",
+    "text": "attractions in Pokhara-Pokhara is known for Phewa Lake, Davis Falls, Gupteshwor Cave, World Peace Pagoda, Sarangkot sunrise viewpoint, and stunning views of the Annapurna mountain range.",
+    "type": "attraction"
+  },
+  {
+    "city": "nagarkot",
+    "filename": "tour_attraction.json",
+    "text": "attractions in Nagarkot-Nagarkot is a hill station near Kathmandu famous for panoramic sunrise and sunset views of the Himalayas, hiking trails, and peaceful nature surroundings.",
+    "type": "attraction"
+  },
+  {
+    "city": "lumbini",
+    "filename": "tour_attraction.json",
+    "text": "attractions in Lumbini-Lumbini is the birthplace of Lord Buddha, featuring the Maya Devi Temple, Ashokan Pillar, monastic zones with temples built by various countries, and peaceful meditation areas.",
+    "type": "attraction"
+  },
+  {
+    "city": "chitwan",
+    "filename": "tour_attraction.json",
+    "text": "attractions in Chitwan-Chitwan National Park offers jungle safaris, wildlife viewing including rhinos and tigers, canoeing on the Rapti River, and Tharu cultural experiences with local villages and dances.",
+    "type": "attraction"
+  }
+]

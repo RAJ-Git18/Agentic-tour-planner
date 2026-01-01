@@ -1,0 +1,302 @@
+[
+  {
+    "city": "chitwan",
+    "filename": "hotels.json",
+    "text": "hotel name -Meghauli Serai, hotel level-5, price per night - 160",
+    "type": "hotels"
+  },
+  {
+    "city": "nagarkot",
+    "filename": "hotels.json",
+    "text": "hotel name -Club Himalaya, hotel level-4, price per night - 90",
+    "type": "hotels"
+  },
+  {
+    "city": "pokhara",
+    "filename": "hotels.json",
+    "text": "hotel name -Waterfront Resort, hotel level-5, price per night - 160",
+    "type": "hotels"
+  },
+  {
+    "city": "nagarkot",
+    "filename": "hotels.json",
+    "text": "hotel name -Nagarkot Mountain View, hotel level-4, price per night - 110",
+    "type": "hotels"
+  },
+  {
+    "city": "nagarkot",
+    "filename": "hotels.json",
+    "text": "hotel name -Hotel Hilltop, hotel level-4, price per night - 95",
+    "type": "hotels"
+  },
+  {
+    "city": "chitwan",
+    "filename": "hotels.json",
+    "text": "hotel name -Bharatpur Lodge, hotel level-3, price per night - 45",
+    "type": "hotels"
+  },
+  {
+    "city": "nagarkot",
+    "filename": "hotels.json",
+    "text": "hotel name -Nagarkot Sunrise Resort, hotel level-4, price per night - 100",
+    "type": "hotels"
+  },
+  {
+    "city": "nagarkot",
+    "filename": "hotels.json",
+    "text": "hotel name -Hotel Country Villa, hotel level-3, price per night - 45",
+    "type": "hotels"
+  },
+  {
+    "city": "kathmandu",
+    "filename": "hotels.json",
+    "text": "hotel name -Kathmandu Guest House, hotel level-3, price per night - 60",
+    "type": "hotels"
+  },
+  {
+    "city": "chitwan",
+    "filename": "hotels.json",
+    "text": "hotel name -Hotel Parkside, hotel level-3, price per night - 40",
+    "type": "hotels"
+  },
+  {
+    "city": "lumbini",
+    "filename": "hotels.json",
+    "text": "hotel name -Lumbini Garden Hotel, hotel level-4, price per night - 80",
+    "type": "hotels"
+  },
+  {
+    "city": "kathmandu",
+    "filename": "hotels.json",
+    "text": "hotel name -Hyatt Regency Kathmandu, hotel level-5, price per night - 180",
+    "type": "hotels"
+  },
+  {
+    "city": "kathmandu",
+    "filename": "hotels.json",
+    "text": "hotel name -Kathmandu Marriott Hotel, hotel level-5, price per night - 170",
+    "type": "hotels"
+  },
+  {
+    "city": "kathmandu",
+    "filename": "hotels.json",
+    "text": "hotel name -Hotel Annapurna, hotel level-5, price per night - 150",
+    "type": "hotels"
+  },
+  {
+    "city": "chitwan",
+    "filename": "hotels.json",
+    "text": "hotel name -Tiger Tops Jungle Lodge, hotel level-5, price per night - 180",
+    "type": "hotels"
+  },
+  {
+    "city": "nagarkot",
+    "filename": "hotels.json",
+    "text": "hotel name -Hotel Peaceful Valley, hotel level-3, price per night - 40",
+    "type": "hotels"
+  },
+  {
+    "city": "nagarkot",
+    "filename": "hotels.json",
+    "text": "hotel name -Himalayan Village Lodge, hotel level-3, price per night - 38",
+    "type": "hotels"
+  },
+  {
+    "city": "pokhara",
+    "filename": "hotels.json",
+    "text": "hotel name -Hotel Pokhara Grande, hotel level-4, price per night - 110",
+    "type": "hotels"
+  },
+  {
+    "city": "lumbini",
+    "filename": "hotels.json",
+    "text": "hotel name -Hotel Lumbini International, hotel level-4, price per night - 90",
+    "type": "hotels"
+  },
+  {
+    "city": "nagarkot",
+    "filename": "hotels.json",
+    "text": "hotel name -Nagarkot Holiday Inn, hotel level-3, price per night - 50",
+    "type": "hotels"
+  },
+  {
+    "city": "nagarkot",
+    "filename": "hotels.json",
+    "text": "hotel name -Nagarkot View Inn, hotel level-3, price per night - 42",
+    "type": "hotels"
+  },
+  {
+    "city": "chitwan",
+    "filename": "hotels.json",
+    "text": "hotel name -Safari Resort, hotel level-4, price per night - 100",
+    "type": "hotels"
+  },
+  {
+    "city": "pokhara",
+    "filename": "hotels.json",
+    "text": "hotel name -Barahi Jungle Lodge, hotel level-4, price per night - 95",
+    "type": "hotels"
+  },
+  {
+    "city": "kathmandu",
+    "filename": "hotels.json",
+    "text": "hotel name -Hotel Yak & Yeti, hotel level-4, price per night - 140",
+    "type": "hotels"
+  },
+  {
+    "city": "chitwan",
+    "filename": "hotels.json",
+    "text": "hotel name -Barahi Jungle Lodge, hotel level-4, price per night - 90",
+    "type": "hotels"
+  },
+  {
+    "city": "kathmandu",
+    "filename": "hotels.json",
+    "text": "hotel name -Dwarika's Hotel, hotel level-5, price per night - 200",
+    "type": "hotels"
+  },
+  {
+    "city": "lumbini",
+    "filename": "hotels.json",
+    "text": "hotel name -Lumbini World Peace Hotel, hotel level-4, price per night - 95",
+    "type": "hotels"
+  },
+  {
+    "city": "lumbini",
+    "filename": "hotels.json",
+    "text": "hotel name -Hotel Maya Devi, hotel level-3, price per night - 38",
+    "type": "hotels"
+  },
+  {
+    "city": "kathmandu",
+    "filename": "hotels.json",
+    "text": "hotel name -Hotel Vaishali, hotel level-3, price per night - 50",
+    "type": "hotels"
+  },
+  {
+    "city": "pokhara",
+    "filename": "hotels.json",
+    "text": "hotel name -Mount Kailash Resort, hotel level-4, price per night - 120",
+    "type": "hotels"
+  },
+  {
+    "city": "pokhara",
+    "filename": "hotels.json",
+    "text": "hotel name -Fewa Paradise, hotel level-4, price per night - 100",
+    "type": "hotels"
+  },
+  {
+    "city": "nagarkot",
+    "filename": "hotels.json",
+    "text": "hotel name -The Fort Resort, hotel level-4, price per night - 120",
+    "type": "hotels"
+  },
+  {
+    "city": "kathmandu",
+    "filename": "hotels.json",
+    "text": "hotel name -Hotel Shanker, hotel level-4, price per night - 120",
+    "type": "hotels"
+  },
+  {
+    "city": "lumbini",
+    "filename": "hotels.json",
+    "text": "hotel name -Royal Lumbini Hotel, hotel level-4, price per night - 85",
+    "type": "hotels"
+  },
+  {
+    "city": "pokhara",
+    "filename": "hotels.json",
+    "text": "hotel name -Hotel Lakefront, hotel level-3, price per night - 55",
+    "type": "hotels"
+  },
+  {
+    "city": "pokhara",
+    "filename": "hotels.json",
+    "text": "hotel name -Hotel City Heart, hotel level-3, price per night - 45",
+    "type": "hotels"
+  },
+  {
+    "city": "chitwan",
+    "filename": "hotels.json",
+    "text": "hotel name -Chitwan Village Resort, hotel level-4, price per night - 95",
+    "type": "hotels"
+  },
+  {
+    "city": "chitwan",
+    "filename": "hotels.json",
+    "text": "hotel name -Chitwan Jungle Lodge, hotel level-3, price per night - 55",
+    "type": "hotels"
+  },
+  {
+    "city": "lumbini",
+    "filename": "hotels.json",
+    "text": "hotel name -Hotel Buddha's Retreat, hotel level-3, price per night - 42",
+    "type": "hotels"
+  },
+  {
+    "city": "lumbini",
+    "filename": "hotels.json",
+    "text": "hotel name -Lumbini Paradise Resort, hotel level-4, price per night - 100",
+    "type": "hotels"
+  },
+  {
+    "city": "lumbini",
+    "filename": "hotels.json",
+    "text": "hotel name -Peaceful Stay Inn, hotel level-3, price per night - 45",
+    "type": "hotels"
+  },
+  {
+    "city": "kathmandu",
+    "filename": "hotels.json",
+    "text": "hotel name -Hotel Tibet International, hotel level-3, price per night - 55",
+    "type": "hotels"
+  },
+  {
+    "city": "pokhara",
+    "filename": "hotels.json",
+    "text": "hotel name -Hotel Barahi, hotel level-3, price per night - 50",
+    "type": "hotels"
+  },
+  {
+    "city": "lumbini",
+    "filename": "hotels.json",
+    "text": "hotel name -Lumbini Comfort Inn, hotel level-3, price per night - 40",
+    "type": "hotels"
+  },
+  {
+    "city": "chitwan",
+    "filename": "hotels.json",
+    "text": "hotel name -Chitwan Resort, hotel level-3, price per night - 50",
+    "type": "hotels"
+  },
+  {
+    "city": "chitwan",
+    "filename": "hotels.json",
+    "text": "hotel name -Green Park Resort, hotel level-4, price per night - 85",
+    "type": "hotels"
+  },
+  {
+    "city": "kathmandu",
+    "filename": "hotels.json",
+    "text": "hotel name -Soaltee Crowne Plaza, hotel level-4, price per night - 130",
+    "type": "hotels"
+  },
+  {
+    "city": "pokhara",
+    "filename": "hotels.json",
+    "text": "hotel name -Temple Tree Resort, hotel level-5, price per night - 150",
+    "type": "hotels"
+  },
+  {
+    "city": "pokhara",
+    "filename": "hotels.json",
+    "text": "hotel name -Hotel Middle Path, hotel level-3, price per night - 40",
+    "type": "hotels"
+  },
+  {
+    "city": "lumbini",
+    "filename": "hotels.json",
+    "text": "hotel name -Bodhi Tree Hotel, hotel level-3, price per night - 50",
+    "type": "hotels"
+  }
+]
