@@ -1,8 +1,9 @@
-from typing import List, TypedDict, Annotated, Union
-import operator
+from typing import List, TypedDict, Annotated
+from pydantic import Field
 
 
 class GraphState(TypedDict):
+    user_id: int
     user_query: str
     messages: List[dict]
     intent: str
@@ -10,3 +11,4 @@ class GraphState(TypedDict):
     planning_response: str
     booking_response: str
     general_response: str
+    is_confirmed: Annotated[bool, Field(default=False)]

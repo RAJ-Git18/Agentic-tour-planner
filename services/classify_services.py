@@ -27,7 +27,8 @@ class ClassifyService:
             If the question is related to general inquiry or chitchat then return general inquiry
 
             note: consider the user message history if any while classifying the intent as the user might be trying to continue the 
-            conversation for the certain intent especially tour planning
+            conversation for the certain intent especially tour planning.
+            .
         """
         structured_llm = self.llm.with_structured_output(Intent)
         response = structured_llm.invoke(prompt)

@@ -7,10 +7,14 @@ import json
 import redis
 from services.classify_services import ClassifyService
 from services.rag_service import RagService
+from services.confirmation_service import ConfirmationService
+from services.booking_service import BookingService
 from dependencies.dependency import (
     get_classify_service,
     get_rag_service,
+    get_confirmation_service,
     get_current_user,
+    get_booking_service,
 )
 from workflow.state import GraphState
 from workflow.graph import graph
@@ -21,8 +25,7 @@ from models.models import User
 router = APIRouter(prefix="/api/user-{userid}/classify", tags=["classification"])
 
 # Initialize Redis
-redis_host = os.getenv("REDIS_HOST", "localhost")
-redis_client = redis.Redis(host=redis_host, port=6379, decode_responses=True)
+redis_client = redis.Redis(host="localhost", port=6379, decode_responses=True)
 
 
 class UserQuery(BaseModel):
@@ -37,6 +40,8 @@ async def classify_user_query(
     query: UserQuery,
     classify_service: ClassifyService = Depends(get_classify_service),
     rag_service: RagService = Depends(get_rag_service),
+    confirmation_service: ConfirmationService = Depends(get_confirmation_service),
+    booking_service: BookingService = Depends(get_booking_service),
     # current_user: User = Depends(get_current_user),``
 ):
     # if userid != current_user.id:
@@ -62,15 +67,17 @@ async def classify_user_query(
             "thread_id": session_id,
             "rag_service": rag_service,
             "classify_service": classify_service,
+            "confirmation_service": confirmation_service,
+            "booking_service": booking_service,
         }
     }
 
     # Run the graph
-    inputs = {"user_query": user_query, "messages": messages}
+    inputs = {"user_id": userid, "user_query": user_query, "messages": messages}
     result = graph.invoke(inputs, config=config)
 
     # Update Redis state
-    redis_client.set(session_id, json.dumps(result))
+    redis_client.set(session_id, json.dumps(result["messages"]))
 
     logger.info(f"router ----> {result}")
     return result

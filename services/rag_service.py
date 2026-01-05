@@ -5,7 +5,7 @@ from langchain_pinecone import PineconeVectorStore
 from langchain_huggingface import HuggingFaceEmbeddings
 from utils.logger import logger
 from sentence_transformers import CrossEncoder
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional
 from pydantic import BaseModel, Field
 
 
@@ -20,6 +20,9 @@ class DayPlan(BaseModel):
 
 class TourPlan(BaseModel):
     summary: str = Field(description="Summary of the tour plan")
+    confirmation: Optional[str] | None = Field(
+        description="If the complete tour plan is created ask the user whether to confirm the tour or regenerate the tour plan "
+    )
     days: List[DayPlan]
     sources_used: List[str] = Field(
         description="Names of attractions/hotels/travel info used"
