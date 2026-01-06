@@ -11,4 +11,3 @@ class GraphState(TypedDict):
     planning_response: str
     booking_response: str
     general_response: str
-    is_confirmed: Annotated[bool, Field(default=False)]

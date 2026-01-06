@@ -12,7 +12,6 @@ from services import (
     document_ingestion_service,
     rag_service,
     user_services,
-    confirmation_service,
     booking_service,
 )
 from database.database_setup import SessionLocal
@@ -65,12 +64,10 @@ def get_classify_service(request: Request):
         emb_model=emb_model, rag_service=rag_service_instance, llm=llm
     )
 
-def get_confirmation_service(request: Request):
-    llm = request.app.state.llm
-    return confirmation_service.ConfirmationService(llm=llm)
 
 def get_booking_service(request: Request, db: Session = Depends(get_db)):
     return booking_service.BookingService(db=db)
+
 
 def get_ingest_document(request: Request):
     pc_index = request.app.state.pc_index

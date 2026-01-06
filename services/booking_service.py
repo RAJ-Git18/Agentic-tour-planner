@@ -11,5 +11,10 @@ class BookingService:
         booking = Booking(user_id=user_id, planning_response=planning_response)
         self.db.add(booking)
         self.db.commit()
-        logger.info(f"Booking created: {booking}")
-        return booking
+        self.db.refresh(booking)
+        logger.info(f"Booking created: {booking.id}")
+        return {
+            "status": "success",
+            "booking_id": booking.id,
+            "message": "Booking confirmed successfully.",
+        }

@@ -32,4 +32,6 @@ def router_node(state: GraphState):
         return "policy"
     elif intent == "planning":
         return "planning"
+    elif intent == "booking":
+        return "booking"
     return "planning"  # Default to planning if not policy for now

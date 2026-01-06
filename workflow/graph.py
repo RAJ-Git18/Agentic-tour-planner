@@ -3,7 +3,7 @@ from workflow.state import GraphState
 from workflow.nodes.classify_node import classify_node, router_node
 from workflow.nodes.policy_node import policy_node
 from workflow.nodes.planner_node import planner_node
-from workflow.nodes.confirmation_node import confirmation_node, finish_or_book
+from workflow.nodes.booking_node import booking_node
 
 workflow = StateGraph(GraphState)
 
@@ -11,20 +11,17 @@ workflow = StateGraph(GraphState)
 workflow.add_node("classify", classify_node)
 workflow.add_node("policy", policy_node)
 workflow.add_node("planning", planner_node)
-workflow.add_node("confirmation", confirmation_node)
-workflow.add_node("booking", finish_or_book)
+workflow.add_node("booking", booking_node)
 
 # mention the edges here the workflow
 workflow.add_edge(START, "classify")
 workflow.add_conditional_edges(
-    "classify", router_node, {"policy": "policy", "planning": "planning"}
+    "classify",
+    router_node,
+    {"policy": "policy", "planning": "planning", "booking": "booking"},
 )
 workflow.add_edge("policy", END)
-workflow.add_edge("planning", "confirmation")
-workflow.add_edge("confirmation", END)
-workflow.add_conditional_edges(
-    "confirmation", finish_or_book, {"finish": END, "book": "booking"}
-)
+workflow.add_edge("planning", END)
 workflow.add_edge("booking", END)
 
 graph = workflow.compile()

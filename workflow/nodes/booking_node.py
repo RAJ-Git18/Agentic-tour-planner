@@ -24,4 +24,4 @@ def booking_node(state: GraphState, config: RunnableConfig):
     else:
         booking_service = None
         raise ValueError("Booking service returned none.")
-    return {"is_confirmed": response}
+    return {"booking_response": response}

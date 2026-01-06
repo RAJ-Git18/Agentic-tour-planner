@@ -7,12 +7,10 @@ import json
 import redis
 from services.classify_services import ClassifyService
 from services.rag_service import RagService
-from services.confirmation_service import ConfirmationService
 from services.booking_service import BookingService
 from dependencies.dependency import (
     get_classify_service,
     get_rag_service,
-    get_confirmation_service,
     get_current_user,
     get_booking_service,
 )
@@ -40,7 +38,6 @@ async def classify_user_query(
     query: UserQuery,
     classify_service: ClassifyService = Depends(get_classify_service),
     rag_service: RagService = Depends(get_rag_service),
-    confirmation_service: ConfirmationService = Depends(get_confirmation_service),
     booking_service: BookingService = Depends(get_booking_service),
     # current_user: User = Depends(get_current_user),``
 ):
@@ -57,7 +54,10 @@ async def classify_user_query(
     existing_state_json = redis_client.get(session_id)
     if existing_state_json:
         existing_state = json.loads(existing_state_json)
-        messages = existing_state.get("messages", [])
+        if isinstance(existing_state, list):
+            messages = existing_state
+        else:
+            messages = existing_state.get("messages", [])
     else:
         messages = []
         existing_state = {"messages": messages, "user_query": user_query}
@@ -67,7 +67,6 @@ async def classify_user_query(
             "thread_id": session_id,
             "rag_service": rag_service,
             "classify_service": classify_service,
-            "confirmation_service": confirmation_service,
             "booking_service": booking_service,
         }
     }
@@ -77,7 +76,7 @@ async def classify_user_query(
     result = graph.invoke(inputs, config=config)
 
     # Update Redis state
-    redis_client.set(session_id, json.dumps(result["messages"]))
+    redis_client.set(session_id, json.dumps({"messages": result["messages"]}))
 
     logger.info(f"router ----> {result}")
     return result
