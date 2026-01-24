@@ -21,7 +21,7 @@ class ClassifyService:
             user message history: {message_history}
             Help to classify the user intent for the given user query into policy, tour planning, booking or general inquiry.
             user query: {user_query}
-            If the question is related to the company policies, cancellations, refunds, or terms of service then return policy
+            If the question is related to the company itself, company policies, cancellations, refunds, or terms of service then return policy
             If the question is related to the tour planning, creating an itinerary, or finding attractions then return planning
             If the question is related to booking a trip, hotel, or flight then return booking
             If the question is related to general inquiry or chitchat then return general inquiry

@@ -14,6 +14,6 @@ def policy_node(state: GraphState, config: RunnableConfig):
 
     if rag_service and user_query:
         response = rag_service.policy_service(user_query)
-        return {"policy_response": response}
+        return {"response": response}
     else:
         raise ValueError("RAG service returned none.")

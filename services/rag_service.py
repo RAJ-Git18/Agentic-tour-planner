@@ -15,22 +15,20 @@ class DayPlan(BaseModel):
     schedule: List[str] = Field(description="Bullet-like steps with times")
     hotel: str
     transport: List[str]
-    tips: List[str]
-
 
 class TourPlan(BaseModel):
-    summary: str = Field(description="Summary of the tour plan")
+    title: str
+    response: List[DayPlan] = Field(description="Day wise planining of the tour")
     confirmation: Optional[str] | None = Field(
         description="If the complete tour plan is created ask the user whether to confirm the tour or regenerate the tour plan "
     )
-    days: List[DayPlan]
     sources_used: List[str] = Field(
         description="Names of attractions/hotels/travel info used"
     )
 
 
 class MissingConstraints(BaseModel):
-    summary: str = Field(description="Summary of the missing constraints")
+    response: str = Field(description="Summary of the missing constraints")
 
 
 class TourConstraints(BaseModel):
@@ -40,10 +38,10 @@ class TourConstraints(BaseModel):
 
 
 class RagService:
-    def __init__(self, pc_index: Any, llm):
+    def __init__(self, pc_index: Any, llm, emb_model, cross_encoder):
         self.pc_index = pc_index
-        self.emb_model = HuggingFaceEmbeddings(model_name="all-mpnet-base-v2")
-        self.cross_encoder = CrossEncoder("cross-encoder/ms-marco-MiniLM-L6-v2")
+        self.emb_model = emb_model
+        self.cross_encoder = cross_encoder
         self.vector_store = PineconeVectorStore(
             index=self.pc_index, embedding=self.emb_model
         )
@@ -166,6 +164,7 @@ INSTRUCTIONS:
 6. Make the plan engaging and well-structured
 7. Use ONLY the information provided above - do not add information not present in the data
 8. Format the response in a clear, readable manner with proper sections
+9. Give the short suitable title like "Tour Plan for {entity_metadata["from_city"]} to {entity_metadata["to_city"]}"
 
 
         """

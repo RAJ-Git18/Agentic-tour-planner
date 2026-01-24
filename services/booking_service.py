@@ -7,8 +7,8 @@ class BookingService:
     def __init__(self, db):
         self.db = db
 
-    def booking_service(self, user_id: str, planning_response: Dict[str, any]):
-        booking = Booking(user_id=user_id, planning_response=planning_response)
+    def booking_service(self, user_id: str, title:str):
+        booking = Booking(user_id=user_id, title=title)
         self.db.add(booking)
         self.db.commit()
         self.db.refresh(booking)

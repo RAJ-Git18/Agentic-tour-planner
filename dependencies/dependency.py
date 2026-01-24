@@ -34,26 +34,14 @@ def get_db():
         db.close()
 
 
-def get_embedding_model(request: Request):
-    return request.app.state.emb_model
-
-
-def get_pinecone_index_service(request: Request):
-    return request.app.state.pc_index
-
-
-def get_llm_service(request: Request):
-    return request.app.state.llm
-
-
-def get_graph(request: Request):
-    return request.app.state.graph
-
-
 def get_rag_service(request: Request):
     pc_index = request.app.state.pc_index
     llm = request.app.state.llm
-    return rag_service.RagService(pc_index=pc_index, llm=llm)
+    emb_model = request.app.state.emb_model
+    cross_encoder = request.app.state.cross_encoder
+    return rag_service.RagService(
+        pc_index=pc_index, llm=llm, emb_model=emb_model, cross_encoder=cross_encoder
+    )
 
 
 def get_classify_service(request: Request):

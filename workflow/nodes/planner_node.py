@@ -23,4 +23,4 @@ def planner_node(state: GraphState, config: RunnableConfig):
     else:
         rag_service = None
         raise ValueError("RAG service returned none.")
-    return {"planning_response": response, "messages": messages}
+    return {"response": response, "messages": messages, "title": response["title"]}

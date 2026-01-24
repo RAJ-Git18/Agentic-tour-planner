@@ -54,13 +54,13 @@ async def classify_user_query(
     existing_state_json = redis_client.get(session_id)
     if existing_state_json:
         existing_state = json.loads(existing_state_json)
-        if isinstance(existing_state, list):
-            messages = existing_state
-        else:
-            messages = existing_state.get("messages", [])
+        if not isinstance(existing_state, dict):
+            existing_state = {"messages": existing_state}
     else:
-        messages = []
-        existing_state = {"messages": messages, "user_query": user_query}
+        existing_state = {}
+
+    messages = existing_state.get("messages", [])
+    title = existing_state.get("title")
 
     config = {
         "configurable": {
@@ -72,11 +72,21 @@ async def classify_user_query(
     }
 
     # Run the graph
-    inputs = {"user_id": userid, "user_query": user_query, "messages": messages}
+    inputs = {
+        "user_id": userid,
+        "user_query": user_query,
+        "messages": messages,
+        "title": title,
+    }
     result = graph.invoke(inputs, config=config)
 
-    # Update Redis state
-    redis_client.set(session_id, json.dumps({"messages": result["messages"]}))
+    # Update Redis state with full results
+    # Ensure title is preserved even if nodes don't return it
+    final_title = result.get("title") or title
+    redis_client.set(
+        session_id,
+        json.dumps({"messages": result.get("messages", []), "title": final_title}),
+    )
 
     logger.info(f"router ----> {result}")
     return result
