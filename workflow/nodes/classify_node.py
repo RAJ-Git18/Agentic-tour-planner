@@ -7,7 +7,6 @@ def classify_node(state: GraphState, config: RunnableConfig):
     """
     Classifies the user query intent.
     """
-    logger.info(f"classify node ----> {state}")
     cfg = config.get("configurable")
     classify_service = cfg.get("classify_service")
     user_query = state.get("user_query")
@@ -16,7 +15,6 @@ def classify_node(state: GraphState, config: RunnableConfig):
     if classify_service and user_query:
         # Assuming classify_service is passed in config
         intent = classify_service.classify(user_query, messages)
-        logger.info(f"Intent ------> {intent}")
     else:
         # Fallback if classify_service not in config
         # This might happen if it's not set correctly in the router
@@ -34,4 +32,4 @@ def router_node(state: GraphState):
         return "planning"
     elif intent == "booking":
         return "booking"
-    return "planning"  # Default to planning if not policy for now
+    return "general"

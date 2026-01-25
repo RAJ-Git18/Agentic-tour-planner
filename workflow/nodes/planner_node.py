@@ -9,7 +9,6 @@ def planner_node(state: GraphState, config: RunnableConfig):
     """
     Gets the answer to the user query from the policy document
     """
-    logger.info(f"planner node ----> {state}")
     cfg = config.get("configurable")
     user_query = state.get("user_query")
     messages = state.get("messages") or []
@@ -23,4 +22,4 @@ def planner_node(state: GraphState, config: RunnableConfig):
     else:
         rag_service = None
         raise ValueError("RAG service returned none.")
-    return {"response": response, "messages": messages, "title": response["title"]}
+    return {"response": response, "messages": messages, "title": response.get("title")}

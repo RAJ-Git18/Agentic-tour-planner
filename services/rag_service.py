@@ -16,8 +16,9 @@ class DayPlan(BaseModel):
     hotel: str
     transport: List[str]
 
+
 class TourPlan(BaseModel):
-    title: str
+    title: Optional[str] = None
     response: List[DayPlan] = Field(description="Day wise planining of the tour")
     confirmation: Optional[str] | None = Field(
         description="If the complete tour plan is created ask the user whether to confirm the tour or regenerate the tour plan "
@@ -28,7 +29,7 @@ class TourPlan(BaseModel):
 
 
 class MissingConstraints(BaseModel):
-    response: str = Field(description="Summary of the missing constraints")
+    response: str
 
 
 class TourConstraints(BaseModel):
@@ -166,7 +167,6 @@ INSTRUCTIONS:
 8. Format the response in a clear, readable manner with proper sections
 9. Give the short suitable title like "Tour Plan for {entity_metadata["from_city"]} to {entity_metadata["to_city"]}"
 
-
         """
         structured_llm = self.llm.with_structured_output(TourPlan)
         response = structured_llm.invoke(prompt)
@@ -190,12 +190,17 @@ INSTRUCTIONS:
                 also make sure to consider the full form like "ktm" instead of "kathmandu" and understand the intent of the user query 
                 to list the above cities only.
 
+
+
+
                 Note: also check for the message history to identify whether any of the entity are already provided by the user or not if yes add that entity to the output.
                 """
 
     def missing_constraints_prompt(self, missing_constraints: list):
         return f"""
         If any missing constraints are found respond to the user politely to fill the missing constraints to continue the tour planning.
+        Also consider this in the response side, here we must promote that our tour package is only for five cities like pokhara, chitwan, kathmandu, lumbini, nagarkot. Make sure to use this in the response
+        if necessary.
         MISSING CONSTRAINTS:
         {missing_constraints}
         """

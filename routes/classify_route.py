@@ -32,6 +32,9 @@ class UserQuery(BaseModel):
     )
 
 
+MAX_MESSAGE = 20
+
+
 @router.post("")
 async def classify_user_query(
     userid: int,
@@ -79,14 +82,18 @@ async def classify_user_query(
         "title": title,
     }
     result = graph.invoke(inputs, config=config)
-
-    # Update Redis state with full results
-    # Ensure title is preserved even if nodes don't return it
     final_title = result.get("title") or title
+
+    # before setting a key to redis check whether N messages exceeds or not
+    if result.get("messages") and len(result.get("messages")) > MAX_MESSAGE:
+        updated_list_of_messages = result.get("messages")[-MAX_MESSAGE:]
+    else:
+        updated_list_of_messages = result.get("messages")
+
     redis_client.set(
         session_id,
-        json.dumps({"messages": result.get("messages", []), "title": final_title}),
+        json.dumps({"messages": updated_list_of_messages, "title": final_title}),
     )
-
+    logger.info(f"Count of messages ----> {len(updated_list_of_messages)}")
     logger.info(f"router ----> {result}")
     return result

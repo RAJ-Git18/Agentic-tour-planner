@@ -9,7 +9,6 @@ def booking_node(state: GraphState, config: RunnableConfig):
     """
     confirm the booking of the user as per the plan created
     """
-    logger.info(f"booking node ----> {state}")
     cfg = config.get("configurable")
     user_query = state.get("user_query")
     messages = state.get("messages") or []
