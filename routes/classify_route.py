@@ -1,24 +1,23 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
-from typing import List, Optional
-import uuid
-import os
 import json
 import redis
-from services.classify_services import ClassifyService
-from services.rag_service import RagService
-from services.booking_service import BookingService
-from dependencies.dependency import (
-    get_classify_service,
-    get_rag_service,
-    get_current_user,
-    get_booking_service,
-)
 from workflow.state import GraphState
 from workflow.graph import graph
 from langchain_core.runnables import RunnableConfig
 from utils.logger import logger
 from models.models import User
+from services.classify_services import ClassifyService
+from services.rag_service import RagService
+from services.booking_service import BookingService
+from services.embedding_service import EmbeddingService
+
+from dependencies.dependency import (
+    get_classify_service,
+    get_rag_service,
+    get_booking_service,
+    get_embedding_service,
+)
 
 router = APIRouter(prefix="/api/user-{userid}/classify", tags=["classification"])
 
@@ -42,7 +41,8 @@ async def classify_user_query(
     classify_service: ClassifyService = Depends(get_classify_service),
     rag_service: RagService = Depends(get_rag_service),
     booking_service: BookingService = Depends(get_booking_service),
-    # current_user: User = Depends(get_current_user),``
+    embedding_service: EmbeddingService = Depends(get_embedding_service),
+    # current_user: User = Depends(get_current_user),
 ):
     # if userid != current_user.id:
     #     raise HTTPException(
@@ -68,9 +68,10 @@ async def classify_user_query(
     config = {
         "configurable": {
             "thread_id": session_id,
-            "rag_service": rag_service,
             "classify_service": classify_service,
+            "rag_service": rag_service,
             "booking_service": booking_service,
+            "embedding_service": embedding_service,
         }
     }
 
@@ -81,7 +82,7 @@ async def classify_user_query(
         "messages": messages,
         "title": title,
     }
-    result = graph.invoke(inputs, config=config)
+    result = await graph.ainvoke(inputs, config=config)
     final_title = result.get("title") or title
 
     # before setting a key to redis check whether N messages exceeds or not

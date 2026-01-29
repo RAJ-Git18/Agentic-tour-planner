@@ -3,7 +3,10 @@ from langchain_core.runnables import RunnableConfig
 from utils.logger import logger
 
 
-def classify_node(state: GraphState, config: RunnableConfig):
+async def classify_node(
+    state: GraphState,
+    config: RunnableConfig,
+):
     """
     Classifies the user query intent.
     """
@@ -12,12 +15,9 @@ def classify_node(state: GraphState, config: RunnableConfig):
     user_query = state.get("user_query")
     messages = state.get("messages") or []
 
-    if classify_service and user_query:
-        # Assuming classify_service is passed in config
-        intent = classify_service.classify(user_query, messages)
+    if user_query:
+        intent = await classify_service.classify(user_query, messages)
     else:
-        # Fallback if classify_service not in config
-        # This might happen if it's not set correctly in the router
         intent = "general inquiry"
 
     return {"intent": intent}

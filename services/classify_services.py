@@ -11,12 +11,10 @@ class ClassifyService:
     Classifies the intent of the user query like policy, tour planning, booking or general inquiry
     """
 
-    def __init__(self, emb_model, rag_service, llm):
-        self.emb_model = emb_model
-        self.rag_service = rag_service
+    def __init__(self, llm):
         self.llm = llm
 
-    def classify(self, user_query, message_history):
+    async def classify(self, user_query, message_history):
         prompt = f"""
             user message history: {message_history}
             Help to classify the user intent for the given user query into policy, planning, booking or general.
@@ -31,7 +29,7 @@ class ClassifyService:
             .
         """
         structured_llm = self.llm.with_structured_output(Intent)
-        response = structured_llm.invoke(prompt)
+        response = await structured_llm.ainvoke(prompt)
         intent = response.model_dump()
         logger.info(f"classify service ----> {intent}")
         return intent["intent"]

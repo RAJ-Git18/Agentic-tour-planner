@@ -5,7 +5,7 @@ from langchain_core.runnables import RunnableConfig
 from utils.logger import logger
 
 
-def general_node(state: GraphState, config: RunnableConfig):
+async def general_node(state: GraphState, config: RunnableConfig):
     """
     Get the general answer to the user query.
     """

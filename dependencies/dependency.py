@@ -11,8 +11,11 @@ from services import (
     classify_services,
     document_ingestion_service,
     rag_service,
+    policy_service,
+    tour_planner_service,
     user_services,
     booking_service,
+    embedding_service,
 )
 from database.database_setup import SessionLocal
 from models.models import User
@@ -34,23 +37,36 @@ def get_db():
         db.close()
 
 
+def get_llm_service(request: Request):
+    return request.app.state.llm
+
+
+def get_embedding_service(request: Request):
+    emb_model = request.app.state.emb_model
+    return embedding_service.EmbeddingService(model=emb_model)
+
+
 def get_rag_service(request: Request):
     pc_index = request.app.state.pc_index
     llm = request.app.state.llm
     emb_model = request.app.state.emb_model
     cross_encoder = request.app.state.cross_encoder
-    return rag_service.RagService(
+
+    # Core logic: We create the 'dependencies' of RagService here
+    policy = policy_service.PolicyService(
         pc_index=pc_index, llm=llm, emb_model=emb_model, cross_encoder=cross_encoder
     )
+    tour = tour_planner_service.TourPlannerService(
+        pc_index=pc_index, llm=llm, emb_model=emb_model
+    )
+
+    # Then we inject them into the main service
+    return rag_service.RagService(policy_service=policy, tour_planner=tour)
 
 
 def get_classify_service(request: Request):
-    emb_model = request.app.state.emb_model
-    rag_service_instance = get_rag_service(request)
     llm = request.app.state.llm
-    return classify_services.ClassifyService(
-        emb_model=emb_model, rag_service=rag_service_instance, llm=llm
-    )
+    return classify_services.ClassifyService(llm=llm)
 
 
 def get_booking_service(request: Request, db: Session = Depends(get_db)):
