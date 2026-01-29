@@ -4,6 +4,10 @@ from langchain_huggingface import HuggingFaceEmbeddings
 
 
 class EmbeddingService:
+    """
+    This service does the embedding in thread pool to avoid the blocking of the event loop.
+    """
+
     def __init__(self, model):
         self.model = model
         self.executor = ThreadPoolExecutor(max_workers=4)
