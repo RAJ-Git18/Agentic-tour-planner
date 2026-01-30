@@ -11,12 +11,14 @@ from services.classify_services import ClassifyService
 from services.rag_service import RagService
 from services.booking_service import BookingService
 from services.embedding_service import EmbeddingService
+from services.redis_service import RedisService
 
 from dependencies.dependency import (
     get_classify_service,
     get_rag_service,
     get_booking_service,
     get_embedding_service,
+    get_redis_service,
 )
 
 router = APIRouter(prefix="/api/user-{userid}/classify", tags=["classification"])
@@ -42,28 +44,18 @@ async def classify_user_query(
     rag_service: RagService = Depends(get_rag_service),
     booking_service: BookingService = Depends(get_booking_service),
     embedding_service: EmbeddingService = Depends(get_embedding_service),
-    # current_user: User = Depends(get_current_user),
+    redis_service: RedisService = Depends(get_redis_service),
 ):
-    # if userid != current_user.id:
-    #     raise HTTPException(
-    #         status_code=status.HTTP_403_FORBIDDEN,
-    #         detail="Unknow user are not allowed please enter the valid userid path",
-    #     )
-
+    """
+    This starts the graph execution and returns the result.
+    """
     session_id = f"session_{userid}"
     user_query = query.user_query
 
     # Get existing state from Redis
-    existing_state_json = redis_client.get(session_id)
-    if existing_state_json:
-        existing_state = json.loads(existing_state_json)
-        if not isinstance(existing_state, dict):
-            existing_state = {"messages": existing_state}
-    else:
-        existing_state = {}
-
-    messages = existing_state.get("messages", [])
-    title = existing_state.get("title")
+    redis_response = redis_service.get_redis(userid)
+    messages = redis_response.get("messages")
+    title = redis_response.get("title")
 
     config = {
         "configurable": {
@@ -86,15 +78,7 @@ async def classify_user_query(
     final_title = result.get("title") or title
 
     # before setting a key to redis check whether N messages exceeds or not
-    if result.get("messages") and len(result.get("messages")) > MAX_MESSAGE:
-        updated_list_of_messages = result.get("messages")[-MAX_MESSAGE:]
-    else:
-        updated_list_of_messages = result.get("messages")
-
-    redis_client.set(
-        session_id,
-        json.dumps({"messages": updated_list_of_messages, "title": final_title}),
-    )
+    redis_service.set_redis(userid=userid, result=result, title=final_title)
+    updated_list_of_messages = result.get("messages")
     logger.info(f"Count of messages ----> {len(updated_list_of_messages)}")
-    logger.info(f"router ----> {result}")
     return result

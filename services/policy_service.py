@@ -11,25 +11,11 @@ class PolicyService(BaseRagService):
             query=user_query, k=6, filter={"filename": "company_info.txt"}
         )
 
-        retrieved_doc_list = []
-        score_list = []
+        retrieved_doc_list = [doc.page_content for doc, score in retriever_results]
 
-        for doc, score in retriever_results:
-            logger.info(f"doc---->{doc.page_content}")
-            if self.cross_encoder:
-                # Cross-encoder is CPU heavy, we'll keep it sync for now
-                # but run in a thread if we wanted true non-blocking
-                score = self.cross_encoder.predict([(user_query, doc.page_content)])
-                logger.info(f"Score----->{score}")
+        top_3_docs = await self.ranking_service.rank_documents(user_query, retrieved_doc_list)
 
-            retrieved_doc_list.append(doc.page_content)
-            score_list.append(score)
-
-        pairs = list(zip(score_list, retrieved_doc_list))
-        pairs.sort(reverse=True)
-        _, retrieved_docs = zip(*pairs)
-
-        top_3_docs = retrieved_docs[:3]
+        logger.info(f"Top 3 docs ----> {top_3_docs}")
 
         prompt = self._get_policy_prompt(user_query, top_3_docs)
         response = await self.llm.ainvoke(prompt)

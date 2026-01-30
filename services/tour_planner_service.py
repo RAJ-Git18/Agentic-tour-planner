@@ -87,7 +87,8 @@ class TourPlannerService(BaseRagService):
         )
         return [doc.page_content for doc, score in results]
 
-    def _get_planning_prompt(self, user_query, metadata, attractions, travel, hotels):
+    @staticmethod
+    def _get_planning_prompt(user_query, metadata, attractions, travel, hotels):
         return f"""
         You are an expert tour planner. Create a {metadata["days"]}-day tour plan from {metadata["from_city"]} to {metadata["to_city"]}.
         

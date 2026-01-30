@@ -5,11 +5,11 @@ from utils.logger import logger
 
 
 class BaseRagService(ABC):
-    def __init__(self, pc_index: Any, llm, emb_model, cross_encoder=None):
+    def __init__(self, pc_index: Any, llm, emb_model, ranking_service=None):
         self.pc_index = pc_index
         self.llm = llm
         self.emb_model = emb_model
-        self.cross_encoder = cross_encoder
+        self.ranking_service = ranking_service
         self.vector_store = PineconeVectorStore(
             index=self.pc_index, embedding=self.emb_model
         )

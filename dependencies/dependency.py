@@ -16,6 +16,8 @@ from services import (
     user_services,
     booking_service,
     embedding_service,
+    redis_service,
+    ranking_service,
 )
 from database.database_setup import SessionLocal
 from models.models import User
@@ -46,15 +48,24 @@ def get_embedding_service(request: Request):
     return embedding_service.EmbeddingService(model=emb_model)
 
 
-def get_rag_service(request: Request):
+def get_ranking_service(request: Request):
+    cross_encoder = request.app.state.cross_encoder
+    return ranking_service.RankingService(model=cross_encoder)
+
+
+def get_redis_service(request: Request):
+    return redis_service.RedisService()
+
+
+def get_rag_service(request: Request, ranking_service=Depends(get_ranking_service)):
     pc_index = request.app.state.pc_index
     llm = request.app.state.llm
     emb_model = request.app.state.emb_model
-    cross_encoder = request.app.state.cross_encoder
+    ranking_service = ranking_service
 
     # Core logic: We create the 'dependencies' of RagService here
     policy = policy_service.PolicyService(
-        pc_index=pc_index, llm=llm, emb_model=emb_model, cross_encoder=cross_encoder
+        pc_index=pc_index, llm=llm, emb_model=emb_model, ranking_service = ranking_service
     )
     tour = tour_planner_service.TourPlannerService(
         pc_index=pc_index, llm=llm, emb_model=emb_model
