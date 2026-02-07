@@ -64,8 +64,8 @@ class TourPlannerService(BaseRagService):
         missing_constraints_resp = await structured_llm.ainvoke(prompt)
         return missing_constraints_resp.model_dump()
 
-    def _fetch_data(self, query: str, metadata: dict, data_type: str):
-        results = self.similarity_search(
+    async def _fetch_data(self, query: str, metadata: dict, data_type: str):
+        results = await self.similarity_search(
             query=query,
             k=3,
             filter={
@@ -75,8 +75,8 @@ class TourPlannerService(BaseRagService):
         )
         return [doc.page_content for doc, score in results]
 
-    def _fetch_travel_hours(self, query: str, metadata: dict):
-        results = self.similarity_search(
+    async def _fetch_travel_hours(self, query: str, metadata: dict):
+        results = await self.similarity_search(
             query=query,
             k=3,
             filter={

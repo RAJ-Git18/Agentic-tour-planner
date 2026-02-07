@@ -1,5 +1,6 @@
 import redis
 import json
+import hashlib
 
 MAX_MESSAGE = 20
 
@@ -30,3 +31,14 @@ class RedisService:
             session_id,
             json.dumps({"messages": updated_list_of_messages, "title": title}),
         )
+
+    def set_emb_cache(self, user_query: str, embedding: list):
+        norm_user_query = user_query.strip().lower()
+        key = f"embedding:{hashlib.sha256(norm_user_query.encode()).hexdigest()}"
+        self.redis_client.set(key, json.dumps(embedding), ex=86400)
+
+    def get_emb_cache(self, user_query: str):
+        norm_user_query = user_query.strip().lower()
+        key = f"embedding:{hashlib.sha256(norm_user_query.encode()).hexdigest()}"
+        cached_data = self.redis_client.get(key)
+        return json.loads(cached_data) if cached_data else None

@@ -7,13 +7,15 @@ class PolicyService(BaseRagService):
         """
         Handles policy-related queries using RAG and re-ranking.
         """
-        retriever_results = self.similarity_search(
+        retriever_results = await self.similarity_search(
             query=user_query, k=6, filter={"filename": "company_info.txt"}
         )
 
         retrieved_doc_list = [doc.page_content for doc, score in retriever_results]
 
-        top_3_docs = await self.ranking_service.rank_documents(user_query, retrieved_doc_list)
+        top_3_docs = await self.ranking_service.rank_documents(
+            user_query, retrieved_doc_list
+        )
 
         logger.info(f"Top 3 docs ----> {top_3_docs}")
 

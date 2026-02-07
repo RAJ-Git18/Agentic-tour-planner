@@ -1,3 +1,5 @@
+import time
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
 import json
@@ -8,17 +10,11 @@ from langchain_core.runnables import RunnableConfig
 from utils.logger import logger
 from models.models import User
 from services.classify_services import ClassifyService
-from services.rag_service import RagService
-from services.booking_service import BookingService
-from services.embedding_service import EmbeddingService
 from services.redis_service import RedisService
 
 from dependencies.dependency import (
-    get_classify_service,
-    get_rag_service,
-    get_booking_service,
-    get_embedding_service,
     get_redis_service,
+    get_graph_config,
 )
 
 router = APIRouter(prefix="/api/user-{userid}/classify", tags=["classification"])
@@ -40,32 +36,23 @@ MAX_MESSAGE = 20
 async def classify_user_query(
     userid: int,
     query: UserQuery,
-    classify_service: ClassifyService = Depends(get_classify_service),
-    rag_service: RagService = Depends(get_rag_service),
-    booking_service: BookingService = Depends(get_booking_service),
-    embedding_service: EmbeddingService = Depends(get_embedding_service),
     redis_service: RedisService = Depends(get_redis_service),
+    config: dict = Depends(get_graph_config),
 ):
     """
     This starts the graph execution and returns the result.
     """
     session_id = f"session_{userid}"
     user_query = query.user_query
+    start_time = time.time()
 
     # Get existing state from Redis
     redis_response = redis_service.get_redis(userid)
     messages = redis_response.get("messages")
     title = redis_response.get("title")
 
-    config = {
-        "configurable": {
-            "thread_id": session_id,
-            "classify_service": classify_service,
-            "rag_service": rag_service,
-            "booking_service": booking_service,
-            "embedding_service": embedding_service,
-        }
-    }
+    # Add thread_id to the config derived from dependency
+    config["configurable"]["thread_id"] = session_id
 
     # Run the graph
     inputs = {
@@ -81,4 +68,6 @@ async def classify_user_query(
     redis_service.set_redis(userid=userid, result=result, title=final_title)
     updated_list_of_messages = result.get("messages")
     logger.info(f"Count of messages ----> {len(updated_list_of_messages)}")
+    end_time = time.time()
+    logger.info(f"Time taken ----> {end_time - start_time}")    
     return result

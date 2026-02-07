@@ -57,18 +57,31 @@ def get_redis_service(request: Request):
     return redis_service.RedisService()
 
 
-def get_rag_service(request: Request, ranking_service=Depends(get_ranking_service)):
+def get_rag_service(
+    request: Request,
+    embedding_service=Depends(get_embedding_service),
+    ranking_service=Depends(get_ranking_service),
+    redis_service=Depends(get_redis_service),
+):
     pc_index = request.app.state.pc_index
     llm = request.app.state.llm
-    emb_model = request.app.state.emb_model
+    embedding_service = embedding_service
     ranking_service = ranking_service
+    redis_service = redis_service
 
     # Core logic: We create the 'dependencies' of RagService here
     policy = policy_service.PolicyService(
-        pc_index=pc_index, llm=llm, emb_model=emb_model, ranking_service = ranking_service
+        pc_index=pc_index,
+        llm=llm,
+        embedding_service=embedding_service,
+        ranking_service=ranking_service,
+        redis_service=redis_service,
     )
     tour = tour_planner_service.TourPlannerService(
-        pc_index=pc_index, llm=llm, emb_model=emb_model
+        pc_index=pc_index,
+        llm=llm,
+        embedding_service=embedding_service,
+        redis_service=redis_service,
     )
 
     # Then we inject them into the main service
@@ -94,6 +107,22 @@ def get_ingest_document(request: Request):
 
 def get_user_services(db: Session = Depends(get_db)):
     return user_services.UserServices(db=db)
+
+
+def get_graph_config(
+    rag_service=Depends(get_rag_service),
+    classify_service=Depends(get_classify_service),
+    booking_service=Depends(get_booking_service),
+    redis_service=Depends(get_redis_service),
+):
+    return {
+        "configurable": {
+            "rag_service": rag_service,
+            "classify_service": classify_service,
+            "booking_service": booking_service,
+            "redis_service": redis_service,
+        }
+    }
 
 
 async def get_current_user(
