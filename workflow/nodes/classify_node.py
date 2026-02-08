@@ -18,7 +18,7 @@ async def classify_node(
     if user_query:
         intent = await classify_service.classify(user_query, messages)
     else:
-        intent = "general inquiry"
+        intent = "general"
 
     return {"intent": intent}
 
