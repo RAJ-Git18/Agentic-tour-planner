@@ -15,7 +15,6 @@ class ClassifyService:
         self.llm = llm
 
     async def classify(self, user_query, message_history):
-
         prompt = f"""
             user message history: {message_history}
             Help to classify the user intent for the given user query into policy, planning, booking or general.
@@ -29,15 +28,8 @@ class ClassifyService:
             conversation for the certain intent especially tour planning.
             .
         """
-        try:
-            structured_llm = self.llm.with_structured_output(Intent)
-            # Invoke the LLM
-            response = await structured_llm.ainvoke(prompt)
-            intent = response.model_dump()
-            logger.info(f"classify service ----> {intent}")
-            return intent["intent"]
-        except Exception as e:
-            # FALLBACK: If LLM fails (network, parsing, etc.), default to "general"
-            # so the user is routed to the general node instead of crashing.
-            logger.error(f"Classification Failed: {e}. Defaulting to 'general'.")
-            return "general"
+        structured_llm = self.llm.with_structured_output(Intent)
+        response = await structured_llm.ainvoke(prompt)
+        intent = response.model_dump()
+        logger.info(f"classify service ----> {intent}")
+        return intent["intent"]

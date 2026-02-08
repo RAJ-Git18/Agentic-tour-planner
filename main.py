@@ -28,10 +28,7 @@ async def lifespan(app: FastAPI):
     pc_index = pc_store.get_index()
 
     llm = ChatGoogleGenerativeAI(
-        model="gemini-2.5-flash",
-        google_api_key=gemini_api_key,
-        temperature=0.2,
-        max_retries=2,
+        model="gemini-2.5-flash", google_api_key=gemini_api_key, temperature=0
     )
 
     emb_model = HuggingFaceEmbeddings(model_name="all-mpnet-base-v2")

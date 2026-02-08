@@ -9,4 +9,4 @@ async def general_node(state: GraphState, config: RunnableConfig):
     """
     Get the general answer to the user query.
     """
-    return {"response": "I am unable to answer at the moment."}
+    return {"response": "I am unable to answer your query as this is out of scope."}

@@ -28,7 +28,7 @@ class BaseRagService(ABC):
     async def similarity_search(self, query: str, k: int = 3, filter: dict = None):
         """Common similarity search logic."""
         # Check Cache
-        embedding_vector = await self.redis_service.get_emb_cache(query)
+        embedding_vector = self.redis_service.get_emb_cache(query)
 
         if embedding_vector:
             logger.info("Embedding CACHE HIT")
@@ -36,7 +36,7 @@ class BaseRagService(ABC):
             logger.info("Embedding CACHE MISS -> Generating")
             embedding_vector = await self.embedding_service.get_embedding_async(query)
             # Store in Cache
-            await self.redis_service.set_emb_cache(query, embedding_vector)
+            self.redis_service.set_emb_cache(query, embedding_vector)
 
         return self.vector_store.similarity_search_by_vector_with_score(
             embedding=embedding_vector, k=k, filter=filter
