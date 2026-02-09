@@ -54,7 +54,8 @@ def get_ranking_service(request: Request):
 
 
 def get_redis_service(request: Request):
-    return redis_service.RedisService()
+    redis_client = request.app.state.redis_client
+    return redis_service.RedisService(redis_client=redis_client)
 
 
 def get_rag_service(

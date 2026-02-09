@@ -2,11 +2,14 @@ from typing import List, Dict, Any
 from services.base_rag import BaseRagService
 from schemas.rag_schemas import TourConstraints, MissingConstraints, TourPlan
 from utils.logger import logger
+from prompts.ai_prompts import AIPrompts
 import asyncio
+
+from config import settings
 
 
 class TourPlannerService(BaseRagService):
-    ALLOWED_CITIES = ["kathmandu", "pokhara", "chitwan", "lumbini", "nagarkot"]
+    ALLOWED_CITIES = settings.ALLOWED_CITIES
 
     async def run(self, user_query: str, message_history: list):
         """
@@ -27,7 +30,7 @@ class TourPlannerService(BaseRagService):
         )
 
         # 3. Generate the tour plan
-        prompt = self._get_planning_prompt(
+        prompt = AIPrompts.get_planning_prompt(
             user_query, entity_metadata, attractions, travel_info, hotels
         )
         structured_llm = self.llm.with_structured_output(TourPlan)
@@ -38,28 +41,20 @@ class TourPlannerService(BaseRagService):
     async def _get_tour_constraints(
         self, user_query: str, message_history: list
     ) -> Dict[str, Any]:
-        prompt = f"""
-                INPUT:
-                user query : {user_query}
-                message history: {message_history}
-
-                Role: You are an AI assistant to retrieve the necessary entity
-                from the above given user query and provide in the following json 
-                format. We have got only 5 cities in the database: {self.ALLOWED_CITIES}.
-                Make sure to consider city full names.
-
-                Note: check message history for existing entities.
-                """
+        prompt = AIPrompts.get_tour_constraint_prompt(
+            user_query=user_query,
+            message_history=message_history,
+            allowed_cities=self.ALLOWED_CITIES,
+        )
         structured_llm = self.llm.with_structured_output(TourConstraints)
         entity = await structured_llm.ainvoke(prompt)
         return entity.model_dump()
 
     async def _handle_missing_constraints(self, missing_constraints: list):
-        prompt = f"""
-        If any missing constraints are found respond to the user politely to fill the missing constraints to continue the tour planning.
-        Promote our tour package for: {", ".join(self.ALLOWED_CITIES)}.
-        MISSING CONSTRAINTS: {missing_constraints}
-        """
+        prompt = AIPrompts.get_missing_constraints_prompt(
+            missing_constraints=missing_constraints,
+            allowed_cities=self.ALLOWED_CITIES,
+        )
         structured_llm = self.llm.with_structured_output(MissingConstraints)
         missing_constraints_resp = await structured_llm.ainvoke(prompt)
         return missing_constraints_resp.model_dump()
@@ -86,24 +81,3 @@ class TourPlannerService(BaseRagService):
             },
         )
         return [doc.page_content for doc, score in results]
-
-    @staticmethod
-    def _get_planning_prompt(user_query, metadata, attractions, travel, hotels):
-        return f"""
-        You are an expert tour planner. Create a {metadata["days"]}-day tour plan from {metadata["from_city"]} to {metadata["to_city"]}.
-        
-        USER QUERY: {user_query}
-        
-        DATA:
-        - Attractions: {attractions}
-        - Travel Info: {travel}
-        - Hotels: {hotels}
-
-        INSTRUCTIONS:
-        1. {metadata["days"]}-day itinerary.
-        2. Specific timings.
-        3. Best hotel from data.
-        4. Travel mode/time.
-        5. Use ONLY provided info.
-        6. Title: "Tour Plan for {metadata["from_city"]} to {metadata["to_city"]}"
-        """

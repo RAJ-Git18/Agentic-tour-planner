@@ -38,3 +38,5 @@ aiohttp
 jinja2
 pyyaml
 argon2-cffi
+pytest
+pytest-asyncio
