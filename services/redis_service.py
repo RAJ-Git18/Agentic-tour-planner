@@ -4,7 +4,7 @@ import hashlib
 
 from config import settings
 
-MAX_MESSAGES = settings.REDIS_MAX_MESSAGES
+MAX_MESSAGE = settings.REDIS_MAX_MESSAGES
 
 
 class RedisService:

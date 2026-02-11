@@ -18,6 +18,7 @@ from services import (
     embedding_service,
     redis_service,
     ranking_service,
+    pinecone_service,
 )
 from database.database_setup import SessionLocal
 from models.models import User
@@ -41,6 +42,10 @@ def get_db():
 
 def get_llm_service(request: Request):
     return request.app.state.llm
+
+
+def get_pinecone_service():
+    return pinecone_service.PineconeService()
 
 
 def get_embedding_service(request: Request):
@@ -98,11 +103,11 @@ def get_booking_service(request: Request, db: Session = Depends(get_db)):
     return booking_service.BookingService(db=db)
 
 
-def get_ingest_document(request: Request):
+def get_ingest_document(request: Request, pc_service=Depends(get_pinecone_service)):
     pc_index = request.app.state.pc_index
     emb_model = request.app.state.emb_model
     return document_ingestion_service.IngestDocumentService(
-        pc_index=pc_index, emb_model=emb_model
+        pc_index=pc_index, emb_model=emb_model, pc_service=pc_service
     )
 
 

@@ -23,6 +23,10 @@ class Settings:
     # --- Business Logic (The "Editable" part) ---
     ALLOWED_CITIES: list = ["kathmandu", "pokhara", "chitwan", "lumbini", "nagarkot"]
 
+    # --- Pinecone Config ---
+    PINECONE_REGION: str = os.getenv("PINECONE_REGION", "us-east-1")
+    EMBEDDING_DIMENSION: int = int(os.getenv("EMBEDDING_DIMENSION", 768))
+
 
 # Global instance
 settings = Settings()

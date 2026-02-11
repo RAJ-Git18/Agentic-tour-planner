@@ -24,9 +24,6 @@ class UserQuery(BaseModel):
     )
 
 
-MAX_MESSAGE = 20
-
-
 @router.post("")
 async def classify_user_query(
     userid: int,

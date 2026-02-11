@@ -1,16 +1,17 @@
 import os
 from contextlib import asynccontextmanager
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_huggingface import HuggingFaceEmbeddings
 from sentence_transformers import CrossEncoder
 from redis.asyncio import Redis
-
-from routes import classify_route, document_ingestion_route, user_register_route
-from vector_store.pinecone_store import PineconeStore
+from database.database_setup import Base, engine
+from routes import classify_route, vector_db_route, user_register_route
 from workflow.graph import graph
 from config import settings
+from dependencies.dependency import get_pinecone_service
+from services.pinecone_service import pc_service
 
 
 @asynccontextmanager
@@ -23,10 +24,7 @@ async def lifespan(app: FastAPI):
     if not pinecone_api_key or not gemini_api_key:
         raise RuntimeError("Missing API keys in environment.")
 
-    pc_store = PineconeStore(
-        api_key=pinecone_api_key, index_name=settings.PINECONE_INDEX
-    )
-    pc_index = pc_store.get_index()
+    pc_index = pc_service.get_index()
 
     llm = ChatGoogleGenerativeAI(
         model="gemini-2.5-flash", google_api_key=gemini_api_key, temperature=0
@@ -56,5 +54,5 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 app.include_router(classify_route.router)
-app.include_router(document_ingestion_route.router)
+app.include_router(vector_db_route.router)
 app.include_router(user_register_route.router)

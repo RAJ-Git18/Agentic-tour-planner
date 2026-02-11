@@ -24,7 +24,7 @@ class TourPlannerService(BaseRagService):
 
         # 2. Fetch relevant data from vector store
         attractions, travel_info, hotels = await asyncio.gather(
-            self._fetch_data(user_query, entity_metadata, "attraction"),
+            self._fetch_data(user_query, entity_metadata, "tour_attraction"),
             self._fetch_travel_hours(user_query, entity_metadata),
             self._fetch_data(user_query, entity_metadata, "hotels"),
         )
