@@ -27,9 +27,9 @@ dist/
 *.sqlite3
 *.db
 
-# ipynb
-.ipynb_checkpoints
-.ipynb
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb
 
 # Alembic
 # Uncomment the line below if you store credentials in alembic.ini
