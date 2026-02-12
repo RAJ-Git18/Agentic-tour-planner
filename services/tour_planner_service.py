@@ -4,8 +4,10 @@ from schemas.rag_schemas import TourConstraints, MissingConstraints, TourPlan
 from utils.logger import logger
 from prompts.ai_prompts import AIPrompts
 import asyncio
-
+from pinecone_text.sparse import SpladeEncoder
 from config import settings
+
+sparse_encoder = SpladeEncoder()
 
 
 class TourPlannerService(BaseRagService):
@@ -60,7 +62,7 @@ class TourPlannerService(BaseRagService):
         return missing_constraints_resp.model_dump()
 
     async def _fetch_data(self, query: str, metadata: dict, data_type: str):
-        results = await self.similarity_search(
+        results = await self.hybrid_search(
             query=query,
             k=3,
             filter={
@@ -68,10 +70,10 @@ class TourPlannerService(BaseRagService):
                 "type": data_type,
             },
         )
-        return [doc.page_content for doc, score in results]
+        return [match["metadata"]["content"] for match in results["matches"]]
 
     async def _fetch_travel_hours(self, query: str, metadata: dict):
-        results = await self.similarity_search(
+        results = await self.hybrid_search(
             query=query,
             k=3,
             filter={
@@ -80,4 +82,4 @@ class TourPlannerService(BaseRagService):
                 "type": "travel_hour",
             },
         )
-        return [doc.page_content for doc, score in results]
+        return [match["metadata"]["content"] for match in results["matches"]]

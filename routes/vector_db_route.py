@@ -27,5 +27,8 @@ async def ingest_file(
 async def delete_index(
     pinecone_service: PineconeService = Depends(get_pinecone_service),
 ):
+    """
+    Delele the index and create the new one
+    """
     pinecone_service.delete_index()
     return {"message": "Index deleted successfully"}

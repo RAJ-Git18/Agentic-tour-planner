@@ -49,7 +49,7 @@ async def classify_user_query(
     # Run the graph
     inputs = {
         "user_id": userid,
-        "user_query": user_query,
+        "user_query": user_query.lower(),
         "messages": messages,
         "title": title,
     }

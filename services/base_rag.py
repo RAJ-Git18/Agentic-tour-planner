@@ -4,6 +4,7 @@ from langchain_pinecone import PineconeVectorStore
 from utils.logger import logger
 from services.embedding_service import EmbeddingService
 from services.redis_service import RedisService
+from pinecone_text.sparse import SpladeEncoder
 
 
 class BaseRagService(ABC):
@@ -20,27 +21,39 @@ class BaseRagService(ABC):
         self.embedding_service = embedding_service
         self.ranking_service = ranking_service
         self.redis_service = redis_service
-        self.vector_store = PineconeVectorStore(
-            index=self.pc_index,
-            embedding=self.embedding_service.get_embedding_async,
-        )
 
-    async def similarity_search(self, query: str, k: int = 3, filter: dict = None):
+    async def hybrid_search(self, query: str, k: int = 3, filter: dict = None):
         """Common similarity search logic."""
         # Check Cache
-        embedding_vector = await self.redis_service.get_emb_cache(query)
+        cached_data = await self.redis_service.get_emb_cache(query)
 
-        if embedding_vector:
+        if cached_data:
             logger.info("Embedding CACHE HIT")
+            dense_embedding = cached_data.get("dense")
+            sparse_embedding = cached_data.get("sparse")
         else:
             logger.info("Embedding CACHE MISS -> Generating")
-            embedding_vector = await self.embedding_service.get_embedding_async(query)
+            dense_embedding = await self.embedding_service.get_embedding_async(query)
+            sparse_embedding = await self.embedding_service.get_sparse_embedding_async(
+                query
+            )
+            embedding_vector = {
+                "dense": dense_embedding,
+                "sparse": sparse_embedding,
+            }
             # Store in Cache
             await self.redis_service.set_emb_cache(query, embedding_vector)
 
-        return self.vector_store.similarity_search_by_vector_with_score(
-            embedding=embedding_vector, k=k, filter=filter
+        result = self.pc_index.query(
+            top_k=k,
+            vector=dense_embedding,
+            sparse_vector=sparse_embedding,
+            include_values=False,
+            include_metadata=True,
         )
+        logger.info(f"Hybrid Search Result completed sucessfully!!")
+
+        return result
 
     @abstractmethod
     def run(self, *args, **kwargs):

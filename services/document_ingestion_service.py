@@ -48,7 +48,7 @@ class DocumentProcessor:
 
         # Chunk text
         text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=1000, chunk_overlap=200
+            chunk_size=500, chunk_overlap=200
         )
         chunks = text_splitter.split_text(clean_text)
 
@@ -57,7 +57,7 @@ class DocumentProcessor:
             doc = Document(
                 page_content=chunk,
                 metadata={
-                    "filename": filename,
+                    "filename": "company.txt",
                     "type": "policy",
                     "chunk_index": i,
                     "content": chunk,

@@ -7,11 +7,16 @@ class PolicyService(BaseRagService):
         """
         Handles policy-related queries using RAG and re-ranking.
         """
-        retriever_results = await self.similarity_search(
-            query=user_query, k=6, filter={"filename": "company_info.txt"}
+        retriever_results = await self.hybrid_search(
+            query=user_query, k=6, filter={"filename": "company.txt"}
         )
 
-        retrieved_doc_list = [doc.page_content for doc, score in retriever_results]
+        logger.info(f"Retriever results ----> {retriever_results}")
+
+        # Extract documents from Pinecone matches
+        retrieved_doc_list = [
+            match["metadata"]["content"] for match in retriever_results["matches"]
+        ]
 
         top_3_docs = await self.ranking_service.rank_documents(
             user_query, retrieved_doc_list

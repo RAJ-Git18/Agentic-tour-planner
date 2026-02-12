@@ -1,6 +1,9 @@
 from concurrent.futures import ThreadPoolExecutor
 import asyncio
 from langchain_huggingface import HuggingFaceEmbeddings
+from pinecone_text.sparse import SpladeEncoder
+
+splade_encoder = SpladeEncoder()
 
 
 class EmbeddingService:
@@ -16,7 +19,17 @@ class EmbeddingService:
     def get_embedding(self, text: str):
         return self.model.embed_query(text)
 
-    async def get_embedding_async(self, text: str):
+    async def get_embedding_async(self, text: str) -> list:
         """Asynchronous wrapper that runs in the thread pool"""
         loop = asyncio.get_event_loop()
         return await loop.run_in_executor(self._executor, self.get_embedding, text)
+
+    def get_sparse_embedding(self, text: str):
+        return splade_encoder.encode_documents(text)
+
+    async def get_sparse_embedding_async(self, text: str) -> dict:
+        """Asynchronous wrapper that runs in the thread pool"""
+        loop = asyncio.get_event_loop()
+        return await loop.run_in_executor(
+            self._executor, self.get_sparse_embedding, text
+        )

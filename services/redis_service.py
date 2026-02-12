@@ -35,10 +35,10 @@ class RedisService:
             json.dumps({"messages": updated_list_of_messages, "title": title}),
         )
 
-    async def set_emb_cache(self, user_query: str, embedding: list):
+    async def set_emb_cache(self, user_query: str, embedding_vectors: dict):
         norm_user_query = user_query.strip().lower()
         key = f"embedding:{hashlib.sha256(norm_user_query.encode()).hexdigest()}"
-        await self.redis_client.set(key, json.dumps(embedding), ex=86400)
+        await self.redis_client.set(key, json.dumps(embedding_vectors), ex=86400)
 
     async def get_emb_cache(self, user_query: str):
         norm_user_query = user_query.strip().lower()
